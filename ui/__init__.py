@@ -1,0 +1,1 @@
+# UI package for Binary Trading Signals Generator

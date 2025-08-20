@@ -1,0 +1,1 @@
+# Binary Trading Signals Generator package
