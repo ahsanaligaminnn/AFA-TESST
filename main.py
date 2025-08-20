@@ -12,8 +12,13 @@ import datetime
 from typing import List, Dict, Any, Optional
 from colorama import init, Fore, Back, Style
 import keyboard
+import requests, json
+import base64
+
 
 # Import modules
+from utils.messages import print_error_message, print_success_message
+from utils.inputs import wait_for_keypress
 from ui.terminal_ui import clear_screen, print_header, print_menu, get_user_input
 from ui.colors import GREEN, RED, YELLOW, BLUE, RESET, BOLD, DIM
 from models.market import (
@@ -35,6 +40,40 @@ init()
 
 # Global timing controller
 timing_controller = TimingController()
+
+USERS_URL = "https://raw.githubusercontent.com/ahsanaligaminnn/AFA-TESST/refs/heads/main/users.json"
+
+USERS_URL = "https://raw.githubusercontent.com/ahsanaligaminnn/AFA-TESST/refs/heads/main/users.json"
+
+def get_users():
+    try:
+        res = requests.get(USERS_URL, timeout=10)
+        if res.status_code == 200:
+            data = res.json()  # direct JSON milega
+            return data.get("users", [])
+        else:
+            print("❌ Error fetching users:", res.status_code)
+            return []
+    except Exception as e:
+        print("❌ Error:", e)
+        return []
+
+def login():
+    users = get_users()
+    if not users:
+        print("No users found. Exiting...")
+        exit()
+
+    print("===== AFA TRADING LOGIN =====")
+    while True:
+        username = input("Enter Username: ")
+        password = input("Enter Password: ")
+
+        for u in users:
+            if u["username"] == username and u["password"] == password:
+                print("✅ Login Successful!\n")
+                return True
+        print("❌ Invalid Username or Password. Try again.\n")
 
 def main():
     """Main function to run the trading signals generator with REAL data only."""
@@ -1124,7 +1163,8 @@ def about_page():
 
 if __name__ == "__main__":
     try:
-        main()
+        if login():   # 👈 login check pehle
+            main()    # 👈 phir signals wala program chalega
     except KeyboardInterrupt:
         clear_screen()
         print(f"\n{YELLOW}Program terminated by user.{RESET}")
