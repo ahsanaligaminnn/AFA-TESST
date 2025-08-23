@@ -1,7 +1,8 @@
 {
   "users": [
     {"username": "AFA TRADING", "password": "afatrading"},
-    {"username": "admin", "password": "admin123"}
+    {"username": "admin", "password": "admin123"},
+    {"username": "user3", "password": "pass3"},
+    {"username": "test4", "password": "t4pass"}
   ]
 }
-
